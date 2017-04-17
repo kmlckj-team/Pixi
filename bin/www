@@ -30,7 +30,7 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
-opn('http://localhost:'+port);  //自动打开浏览器
+opn('http://localhost:'+port+'/demo1');  //自动打开浏览器
 
 
 /**
