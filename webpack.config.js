@@ -2,7 +2,9 @@ var htmlWebpackPlugin = require('html-webpack-plugin');
 var path = require('path');
 
 module.exports = {
-  entry: ['./src/main.js'],
+  entry: {
+    main: './src/main.js'
+  },
   output: {
     path: path.resolve(__dirname,'dist'),
     filename: 'js/[name].bundle.js',

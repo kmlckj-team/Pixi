@@ -4,7 +4,7 @@
  * @date 2017年4月7日10:12:15
  */
  let EventEmitter = require('eventemitter3');
- // let RenderPath = require('./RenderPath');
+ let Render = require('./render');
 
 
 class Scada extends EventEmitter
@@ -12,6 +12,7 @@ class Scada extends EventEmitter
   constructor(objs) {
     super();
     this.objects = objs;
+    this.Render = new Render(111,222);
   }
 
   init(objs) {

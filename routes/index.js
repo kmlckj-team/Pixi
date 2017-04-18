@@ -11,6 +11,10 @@ router.get('/demo1', function(req, res, next) {
   res.render('demo1', { title: 'demo1' });
 });
 
+router.get('/demo2', function(req, res, next) {
+  res.render('demo2', { title: 'demo2' });
+});
+
 router.get('/getDeviceList',function(req,res){
   model.Device.findAll().then(function(ret){
     if(!ret){

@@ -2,14 +2,22 @@
 
 let EventEmitter = require('eventemitter3');
 
-class RenderPath extends EventEmitter
+class Render extends EventEmitter
 {
-  constructor(obj) {
+  constructor(graphics,obj) {
     super();
-    console.log(1234);
-    this.emit('path',obj.data);
-
+    this.graphics = graphics;
+    this.object = obj;
+    this.drawNode(obj)
   }
+
+  drawNode(obj) {
+    console.log(this.on());
+    this.on('test',function(_obj) {
+      console.log(_obj);
+    })
+  }
+
 }
 
-module.exports = RenderPath;
+module.exports = Render;

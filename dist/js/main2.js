@@ -8,7 +8,7 @@ new Vue({
   },
   mounted: function () {
     this.$nextTick(function () {
-      this.startTimer();
+      // this.startTimer();
       this.initScada();
       this.getObjects();
       this.switchRender();
@@ -30,7 +30,7 @@ new Vue({
   methods:{
     initPixi:function(){
       this.container = new PIXI.Container();
-      this.app = new PIXI.autoDetectRenderer(1500, 900, {backgroundColor : '0x103399'});
+      this.app = new PIXI.autoDetectRenderer(1200, 900, {backgroundColor : 0x1099bb});
       document.getElementById('app').appendChild(this.app.view);
     },
     initScada: function() {
@@ -42,6 +42,7 @@ new Vue({
       axios.get('/getDeviceList').then(function(res){
         console.log(res);
         var objs = res.data;
+        console.log(objs);
         _this.scada.init(objs);
       })
     },
@@ -55,33 +56,32 @@ new Vue({
      */
     switchRender: function() {
       var _this = this;
+      this.startTimer();
       this.scada.on('path',function(obj) {
           _this.renderPath(obj);
       });
-      this.scada.on('rect',function(obj) {
-          _this.renderRect(obj);
+      this.scada.on('group',function(obj) {
+          _this.renderPath(obj);
       });
-      // this.scada.on('path-group',function(obj) {
-      //     _this.renderPathGroup(obj);
-      // });
+      this.scada.on('path-group',function(obj) {
+          _this.renderPath(obj);
+      });
+      this.scada.on('rect',function(obj) {
+          _this.renderPath(obj);
+      });
       // this.scada.on('svg',function(obj) {
       //     _this.renderSvg(obj);
       // });
+
     },
 
-    renderPathGroup: function(obj) {
-      console.log(obj);
-      var path = obj.paths;
-      var graphics = new PIXI.Graphics();
-      console.log(path);
-
-      for(var i in path) {
-        var tagName = path[i].type;
-        var type = tagName.charAt(0).toUpperCase() + tagName.slice(1)
-        console.log('draw' + type + 'Node');
-        console.log(SVGGraphics.prototype['draw' + type + 'Node']);
-        SVGGraphics.prototype['draw' + type + 'Node'](path[i]);
-      }
+    setAttribute: function(graphics,obj) {
+      graphics.x = obj.left;
+      graphics.y = obj.top;
+      graphics.width = obj.width;
+      graphics.height = obj.height;
+      graphics.scale.x = obj.scaleX;
+      graphics.scale.y = obj.scaleY;
     },
 
     renderSvg: function(obj) {
@@ -141,34 +141,11 @@ new Vue({
      * @return {[type]}     [description]
      */
     renderPath:function(obj){
-      var path = obj.path;
-      var str = '';
-      for(var i = 0;i<path.length;i++){
-        for(var j = 0;j<path[i].length;j++){
-          str += path[i][j];
-          if((j != 0) && (j != path[i].length-1)){
-            str +=',';
-          }
-        }
-        str +=' ';
-      }
 
-      var dom = document.createElement('path');
-      dom.setAttribute('d',str);
-      dom.setAttribute('style','fill:'+obj.fill+'; stroke: '+obj.stroke+'; stroke-width: '+obj.strokeWidth);
       var graphics = new PIXI.Graphics();
-      var svg = document.createElement('svg');
-      svg.appendChild(dom);
-
       this.container.addChild(graphics);
-      SVGGraphics.drawSVG(graphics, svg);
-      //属性设置
-      graphics.x = obj.left;
-      graphics.y = obj.top;
-      graphics.width = obj.width;
-      graphics.height = obj.height;
-      graphics.scale.x = obj.scaleX;
-      graphics.scale.y = obj.scaleY;
+      SVGGraphics.drawSVG(graphics, obj,this.container);
+      this.setAttribute(graphics,obj);
       this.app.render(this.container);
       this.stopTimer();
       // document.getElementById('timeLine').innerHtml(this.stopTimer);
