@@ -441,8 +441,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var color2color = function (color, newColor, calculateOpacity) {
 	    if (!newColor) {
 	      newColor = "rgba";
-	    }
-
+	    } 
+      if(color.type) {
+        return [];
+      }
 	    color = color.toLowerCase();
 	    newColor = newColor.toLowerCase();
 

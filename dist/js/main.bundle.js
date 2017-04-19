@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -399,12 +399,41 @@ if (true) {
 /***/ (function(module, exports, __webpack_require__) {
 
 
+
+let EventEmitter = __webpack_require__(0);
+
+class Render extends EventEmitter
+{
+  constructor(graphics,obj) {
+    super();
+    this.graphics = graphics;
+    this.object = obj;
+    this.drawNode(obj)
+  }
+
+  drawNode(obj) {
+    console.log(this.on());
+    this.on('test',function(_obj) {
+      console.log(_obj);
+    })
+  }
+
+}
+
+module.exports = Render;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
 /**
  * @author Garens
  * @date 2017年4月7日10:12:15
  */
  let EventEmitter = __webpack_require__(0);
- let Render = __webpack_require__(2);
+ let Render = __webpack_require__(1);
 
 
 class Scada extends EventEmitter
@@ -463,35 +492,6 @@ class Scada extends EventEmitter
 // }
 //
 module.exports = Scada;
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-
-let EventEmitter = __webpack_require__(0);
-
-class Render extends EventEmitter
-{
-  constructor(graphics,obj) {
-    super();
-    this.graphics = graphics;
-    this.object = obj;
-    this.drawNode(obj)
-  }
-
-  drawNode(obj) {
-    console.log(this.on());
-    this.on('test',function(_obj) {
-      console.log(_obj);
-    })
-  }
-
-}
-
-module.exports = Render;
 
 
 /***/ })
